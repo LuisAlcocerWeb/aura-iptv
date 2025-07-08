@@ -1,15 +1,16 @@
+// aura_iptv_nodejs/app.js
+
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 // Página de inicio con formulario
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.resolve('public/index.html'));
 });
 
 // Procesar login y mostrar canales
@@ -37,7 +38,11 @@ app.post('/login', async (req, res) => {
 
     res.send(html);
   } catch (error) {
-    res.send(`<p style='color:red'>Error al conectar con el servidor. Revisa los datos ingresados.</p><a href='/'>Volver</a>`);
+    console.error("🔥 ERROR:", error.message, error.stack);
+    res.status(500).send(`
+      <p style='color:red'>Error al conectar con el servidor: ${error.message}</p>
+      <a href='/'>Volver</a>
+    `);
   }
 });
 
