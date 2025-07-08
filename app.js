@@ -5,22 +5,33 @@ const axios = require('axios');
 const path = require('path');
 const app = express();
 
+console.log("✅ Servidor inicializado...");
+
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 // Página de inicio con formulario
 app.get('/', (req, res) => {
+  console.log("🟢 GET / llamado");
   res.sendFile(path.resolve('public/index.html'));
 });
 
 // Procesar login y mostrar canales
 app.post('/login', async (req, res) => {
+  console.log("🔵 POST /login llamado");
+
   const { host, username, password } = req.body;
+  console.log("🧾 Datos recibidos:", { host, username, password });
 
   try {
     const apiUrl = `${host}/player_api.php?username=${username}&password=${password}`;
+    console.log("🌐 Consultando API:", apiUrl);
+
     const response = await axios.get(apiUrl);
+    console.log("✅ Respuesta recibida de la API");
+
     const channels = response.data.live_streams || [];
+    console.log(`📺 Se encontraron ${channels.length} canales`);
 
     const html = `
       <html><head><title>Aura IPTV</title><style>
@@ -38,7 +49,7 @@ app.post('/login', async (req, res) => {
 
     res.send(html);
   } catch (error) {
-    console.error("🔥 ERROR:", error.message, error.stack);
+    console.error("🔥 ERROR en POST /login:", error.message, error.stack);
     res.status(500).send(`
       <p style='color:red'>Error al conectar con el servidor: ${error.message}</p>
       <a href='/'>Volver</a>
@@ -47,4 +58,3 @@ app.post('/login', async (req, res) => {
 });
 
 module.exports = app;
-
