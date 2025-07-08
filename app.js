@@ -41,4 +41,5 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Aura IPTV corriendo en http://localhost:${PORT}`));
+module.exports = app;
+
