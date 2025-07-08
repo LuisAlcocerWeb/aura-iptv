@@ -1,0 +1,13 @@
+{
+  "name": "aura-iptv",
+  "version": "1.0.0",
+  "description": "Servidor IPTV Aura con Node.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.19.2"
+  }
+}
